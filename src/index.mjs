@@ -8,22 +8,31 @@ async function getUserData(id) {
     db3: db3
   };
   try {
-
+    const dbValue = await central(id);
+    const dbWeb = await dbs[dbValue](id);
+    const userData = await vault(id);
+    return {
+      id: id,
+      name: userData.name,
+      username: dbWeb.username,
+      email: userData.email,
+      address: userData.address,
+      phone: userData.phone,
+      website: dbWeb.website,
+      company: dbWeb.company,
+    }
+  } catch(error) {
+      return Promise.reject(`Error: ${error}`)
   }
-  catch (error) {
-    console.log(`${error}`)
-  }
-  const dbValue = await central(id);
-  const dbWeb = dbs[dbValue](id);
-  const userData = await vault(id);
-  return {dbWeb, userData}
 
 
   
   
 }
 
-getUserData(4);
+getUserData(8)
+  .then(data => console.log(data))
+  .catch(error => console.error(error));
 
 //https://www.canva.com/design/DAFyR810Wik/view
 //https://ps-react-curriculum.herokuapp.com/308A/3/lesson/
